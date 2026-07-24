@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=pyt-cpu
-#SBATCH --account=sds280
+#SBATCH --account=use300
 #SBATCH --partition=compute
-#SBATCH --nodes=1  #try 1 or 2  
-#SBATCH --ntasks-per-node=16 #8 or 16 or 32 etc..  
+#SBATCH --nodes=2  #try 1 or 2  
+#SBATCH --ntasks-per-node=8 #8 or 16 or 32 etc..  
 #SBATCH --cpus-per-task=1   
 #SBATCH --mem=243G   
 #SBATCH --time=00:35:00
@@ -27,7 +27,7 @@ declare -xr MASTER_ADDR=$(mpirun --allow-run-as-root -n 1 hostname -i 2>/dev/nul
 declare -xr MASTER_PORT=${MASTER_PORT:-15566};
 
 #use -n num-of-nodes * num-per-node
-mpirun -n 16 -npernode 16  singularity exec --bind /expanse,/scratch  /cm/shared/apps/containers/singularity/pytorch/pytorch-latest.sif python3 ./mnist_multinode_v6.py > stdout_mnist_multinode.$SLURM_NNODES.cpu.$SLURM_NTASKS_PER_NODE.txt
+mpirun -n 16 -npernode 8  singularity exec --bind /expanse,/scratch  /cm/shared/apps/containers/singularity/pytorch/pytorch-latest.sif python3 ./mnist_multinode_v6.py > stdout_mnist_multinode.$SLURM_NNODES.cpu.$SLURM_NTASKS_PER_NODE.txt
 
 
 
